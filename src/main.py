@@ -1,18 +1,17 @@
-import tkinter as tk
-from tkinter import filedialog, messagebox, ttk
-import subprocess
-from pathlib import Path
-import threading
 import queue
-from typing import List, Tuple
-import os
+import subprocess
+import threading
+import tkinter as tk
+from pathlib import Path
+from tkinter import filedialog, messagebox, ttk
+from typing import List
 
 
 class TranscriptionApp:
     def __init__(self, master: tk.Tk):
         self.master = master
         self.master.title("Transcription App")
-        self.master.geometry("600x500")  # Увеличим высоту окна
+        self.master.geometry("600x500")
         self.master.configure(bg='#f0f0f0')
 
         self.file_path = tk.StringVar()
@@ -90,17 +89,14 @@ class TranscriptionApp:
             messagebox.showerror("Error", "Please select both input file and output directory.")
             return
 
-        input_filename = Path(input_file).stem
-        output_file = Path(output_dir) / f"{input_filename}_transcription.txt"
-
         item = self.transcription_list.insert('', 'end', values=(Path(input_file).name, 'Starting...'))
-        thread = threading.Thread(target=self.run_transcription, args=(input_file, str(output_file), item))
+        thread = threading.Thread(target=self.run_transcription, args=(input_file, output_dir, item))
         thread.start()
         self.active_transcriptions.append(thread)
 
-    def run_transcription(self, input_file: str, output_file: str, item: str):
+    def run_transcription(self, input_file: str, output_dir: str, item: str):
         try:
-            command = self.build_transcription_command(input_file, output_file)
+            command = self.build_transcription_command(input_file, output_dir)
             self.transcription_queue.put((item, 'Running...'))
 
             process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
