@@ -3,6 +3,10 @@
 RussianWhisperGUI - это графический интерфейс для удобного использования инструмента faster-whisper для транскрипции
 аудио и видео файлов на русском языке.
 
+<p align="center">
+  <img src="assets/screenshot.png" alt="RussianWhisperGUI" width="600">
+</p>
+
 ## Особенности
 
 - Простой и интуитивно понятный графический интерфейс
